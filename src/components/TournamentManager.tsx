@@ -101,8 +101,19 @@ export const TournamentManager: React.FC<TournamentManagerProps> = ({
         {/* Quick Actions */}
         <div className="w-full flex gap-3 mb-4">
           <button
-            onClick={() => exportToPDF(tournament)}
+            onClick={() => {
+              try {
+                exportToPDF(tournament);
+              } catch (error) {
+                console.error('Failed to export PDF:', error);
+                alert('Failed to export tournament pairings to PDF. Please try again.');
+              }
+            }}
             className="flex items-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+            disabled={tournament.status === 'setup' || tournament.players.length === 0}
+            title={tournament.status === 'setup' ? 'Start the tournament to export pairings' : 
+                  tournament.players.length === 0 ? 'Add players to export pairings' : 
+                  'Export current round pairings to PDF'}
           >
             <FileDown className="h-4 w-4 mr-2" />
             Export PDF
