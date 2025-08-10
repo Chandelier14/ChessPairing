@@ -109,7 +109,11 @@ export const TournamentManager: React.FC<TournamentManagerProps> = ({
                 alert('Failed to export tournament pairings to PDF. Please try again.');
               }
             }}
-            className="flex items-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+            className={`flex items-center px-4 py-2 rounded-md font-medium transition-colors ${
+              tournament.status === 'setup' || tournament.players.length === 0
+                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                : 'bg-blue-600 text-white hover:bg-blue-700'
+            }`}
             disabled={tournament.status === 'setup' || tournament.players.length === 0}
             title={tournament.status === 'setup' ? 'Start the tournament to export pairings' : 
                   tournament.players.length === 0 ? 'Add players to export pairings' : 
@@ -121,7 +125,9 @@ export const TournamentManager: React.FC<TournamentManagerProps> = ({
           
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="flex items-center px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+            className={`flex items-center px-4 py-2 rounded-md font-medium transition-colors
+              bg-green-600 text-white hover:bg-green-700`}
+            title="Import players from a CSV or text file"
           >
             <Upload className="h-4 w-4 mr-2" />
             Import Players
@@ -129,10 +135,12 @@ export const TournamentManager: React.FC<TournamentManagerProps> = ({
           
           <button
             onClick={toggleLivePairing}
-            className="flex items-center px-4 py-2 bg-gray-600 text-white rounded hover:opacity-90 transition-colors"
+            className="flex items-center px-4 py-2 bg-gray-300 text-gray-500 rounded-md font-medium cursor-not-allowed"
+            disabled={true}
+            title="Live pairing feature is currently disabled"
           >
             <Wifi className="h-4 w-4 mr-2" />
-            Live Pairing (Coming Soon)
+            Live Pairing
           </button>
           
           <input
